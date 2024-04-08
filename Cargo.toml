@@ -1,0 +1,17 @@
+[package]
+name = "github-user-recent-activity-summary"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+license = "BSD-3-Clause"
+license-file = "LICENSE"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+octocrab = "0.37.0"
+tokio = { version = "1", features = ["full"] }
+async-trait = "0.1.79"
+serde_json = "1.0.115"
+chrono = "0.4.37"
+itertools = "0.12.1"
