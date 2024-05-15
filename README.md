@@ -17,3 +17,9 @@ cargo build --release
 ```sh
 ./target/release/github-user-recent-activity-summary MiLk
 ```
+
+## Format
+```sh
+cargo fmt
+```
+It will use `rustfmt.toml` file for formatting.
