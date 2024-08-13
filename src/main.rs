@@ -68,6 +68,7 @@ fn process_event(event: models::events::Event) -> () {
                     unimplemented!("Unsupported ref_type for CreateEvent: {}", unsupported)
                 },
             },
+            EventPayload::ForkEvent(_) => {},
             EventPayload::WatchEvent(_) => {},
             EventPayload::MemberEvent(_) => {},
             _ => unimplemented!("Unsupported Event type {:?}", event.r#type),
