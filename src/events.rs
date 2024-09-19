@@ -1,7 +1,7 @@
 use octocrab::models::events::payload::{
-    IssueCommentEventPayload, PullRequestEventAction, PullRequestEventPayload,
-    PullRequestReviewCommentEventPayload, PullRequestReviewEventPayload, PushEventPayload,
-    ReleaseEventPayload,
+    CommitCommentEventPayload, ForkEventPayload, IssueCommentEventPayload, PullRequestEventAction,
+    PullRequestEventPayload, PullRequestReviewCommentEventPayload, PullRequestReviewEventPayload,
+    PushEventPayload, ReleaseEventPayload, WatchEventPayload,
 };
 
 pub fn handle_release_event(payload: &Box<ReleaseEventPayload>) {
@@ -55,6 +55,13 @@ pub fn handle_issue_comment_event(payload: &Box<IssueCommentEventPayload>) {
     println!("\tCommented on {} {} - {}", issue_type, payload.issue.number, payload.issue.title);
 }
 
+pub fn handle_commit_comment_event(payload: &Box<CommitCommentEventPayload>) {
+    match &payload.comment.issue_url {
+        Some(issue_url) => println!("\tCommented on {} - {}", issue_url, payload.comment.url),
+        None => println!("\tCommented on a commit - {}", payload.comment.url),
+    }
+}
+
 pub fn handle_pull_request_event(payload: &Box<PullRequestEventPayload>) {
     let action = match &payload.action {
         PullRequestEventAction::Closed => payload
@@ -90,4 +97,13 @@ pub fn handle_pull_request_event(payload: &Box<PullRequestEventPayload>) {
         },
         None => {},
     }
+}
+
+pub fn handle_fork_event(payload: &Box<ForkEventPayload>) {
+    let full_name = payload.forkee.full_name.as_ref().map(|s| s.as_str()).unwrap_or("");
+    println!("\tForked {}", full_name)
+}
+
+pub fn handle_watch_event(_payload: &Box<WatchEventPayload>) {
+    println!("\tWatched the repository")
 }

@@ -10,10 +10,7 @@ use octocrab::{models, Octocrab, Result};
 
 use events::handle_issue_comment_event;
 
-use crate::events::{
-    handle_pull_request_event, handle_pull_request_review_comment_event,
-    handle_pull_request_review_event, handle_push_event, handle_release_event,
-};
+use crate::events::*;
 
 mod events;
 
@@ -68,9 +65,10 @@ fn process_event(event: models::events::Event) -> () {
                     unimplemented!("Unsupported ref_type for CreateEvent: {}", unsupported)
                 },
             },
-            EventPayload::ForkEvent(_) => {},
-            EventPayload::WatchEvent(_) => {},
+            EventPayload::ForkEvent(payload) => handle_fork_event(payload),
+            EventPayload::WatchEvent(payload) => handle_watch_event(payload),
             EventPayload::MemberEvent(_) => {},
+            EventPayload::CommitCommentEvent(payload) => handle_commit_comment_event(payload),
             _ => unimplemented!("Unsupported Event type {:?}", event.r#type),
         },
         Err(err) => println!("{}", err),
