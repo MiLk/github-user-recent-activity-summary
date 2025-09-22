@@ -15,10 +15,11 @@ cargo build --release
 ## Usage
 
 ```sh
-./target/release/github-user-recent-activity-summary MiLk
+cargo run --release -- MiLk
 ```
 
 ## Format
+
 ```sh
 cargo fmt
 ```

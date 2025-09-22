@@ -1,12 +1,10 @@
-#![feature(result_flattening)]
-
 use std::cmp::Ordering;
 
 use chrono::Local;
 use itertools::Itertools;
-use octocrab::models::events::payload::EventPayload;
 use octocrab::models::events::EventType;
-use octocrab::{models, Octocrab, Result};
+use octocrab::models::events::payload::EventPayload;
+use octocrab::{Octocrab, Result, models};
 
 use events::handle_issue_comment_event;
 
@@ -54,7 +52,6 @@ fn process_event(event: models::events::Event) -> () {
             EventPayload::PullRequestReviewEvent(payload) => {
                 handle_pull_request_review_event(payload)
             },
-            EventPayload::ReleaseEvent(payload) => handle_release_event(payload),
             EventPayload::CreateEvent(payload) => match payload.ref_type.as_str() {
                 "tag" => match &payload.r#ref {
                     Some(ref_value) => println!("\tCreated tag {}", ref_value),
@@ -96,7 +93,7 @@ async fn main() -> Result<()> {
                 _ => date_ordering,
             }
         })
-        .group_by(|event| {
+        .chunk_by(|event| {
             let repo_name = event.repo.name.clone();
             let day = event.created_at.with_timezone(&Local).date_naive();
             (day, repo_name)
