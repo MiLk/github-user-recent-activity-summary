@@ -52,6 +52,7 @@ fn process_event(event: models::events::Event) -> () {
             EventPayload::PullRequestReviewEvent(payload) => {
                 handle_pull_request_review_event(payload)
             },
+            EventPayload::ReleaseEvent(payload) => handle_release_event(payload),
             EventPayload::CreateEvent(payload) => match payload.ref_type.as_str() {
                 "tag" => match &payload.r#ref {
                     Some(ref_value) => println!("\tCreated tag {}", ref_value),

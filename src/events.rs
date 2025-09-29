@@ -1,8 +1,13 @@
 use octocrab::models::events::payload::{
     CommitCommentEventPayload, ForkEventPayload, IssueCommentEventPayload, PullRequestEventAction,
     PullRequestEventPayload, PullRequestReviewCommentEventPayload, PullRequestReviewEventPayload,
-    PushEventPayload, WatchEventPayload,
+    PushEventPayload, ReleaseEventPayload, WatchEventPayload,
 };
+
+pub fn handle_release_event(payload: &Box<ReleaseEventPayload>) {
+    let release_name = payload.release.name.as_ref().map(|s| s.as_str()).unwrap_or("");
+    println!("\t{:?} release {} - {}", payload.action, release_name, payload.release.html_url);
+}
 
 pub fn handle_push_event(payload: &Box<PushEventPayload>) {
     let git_ref = &payload.r#ref;
